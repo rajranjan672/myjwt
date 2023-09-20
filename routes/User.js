@@ -116,7 +116,10 @@ router.post('/login',[
             id:user.id
         }
     }
-    const authtoken = await jwt.sign(dta, JWT_SECRET);
+    const authtoken = await jwt.sign(dta, JWT_SECRET,
+      {
+        expiresIn: "2h",
+      });
     // success=true
     // res.json({success, authtoken}) 
     res
