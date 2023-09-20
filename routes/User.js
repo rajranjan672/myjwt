@@ -138,7 +138,7 @@ router.post('/login',[
 }
 )
 
-router.get('/logout', function(req, res){
+router.get('/logout', verifyToken, function(req, res){
   cookie = req.cookies;
   for (var prop in cookie) {
       if (!cookie.hasOwnProperty(prop)) {
