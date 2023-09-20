@@ -66,8 +66,7 @@ router.post('/createuser',[
 })
 
 const verifyToken = (req, res, next) => {
-    var token =
-      req.body.token || req.query.token || req.headers["x-access-token"];
+  const token = req.cookies.access_token;
   
     if (!token) {
       return res.status(403).send("A token is required for authentication");
@@ -118,9 +117,16 @@ router.post('/login',[
         }
     }
     const authtoken = await jwt.sign(dta, JWT_SECRET);
-    success=true
-    res.json({success, authtoken}) 
-    
+    // success=true
+    // res.json({success, authtoken}) 
+    res
+    .cookie("access_token", authtoken, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ message: "Logged in successfully 😊 👌" });
+
   } catch (error) {
     console.error(error.message);
     res.status(500).send("internal erorr ");
