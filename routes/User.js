@@ -149,4 +149,21 @@ router.get('/logout', verifyToken, function(req, res){
   res.redirect('/');
 });
 
+
+router.put("/resetpassword/:id", verifyToken, async(req, res, next) => {
+  const salt = await bcrypt.genSalt(10)   
+  secPassword= await bcrypt.hash (req.body.password, salt   ) ;
+  
+  var pwd = {
+    password: secPassword
+  }
+
+  const ress = await User.findByIdAndUpdate(req.params.id, {
+    $set: pwd}, {new: true}
+  
+  )
+  res.send(ress) 
+
+})
+
 module.exports=router;
