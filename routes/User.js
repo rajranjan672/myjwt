@@ -138,4 +138,15 @@ router.post('/login',[
 }
 )
 
+router.get('/logout', function(req, res){
+  cookie = req.cookies;
+  for (var prop in cookie) {
+      if (!cookie.hasOwnProperty(prop)) {
+          continue;
+      }    
+      res.cookie(prop, '', {expiresIn: new Date(0)});
+  }
+  res.redirect('/');
+});
+
 module.exports=router;
