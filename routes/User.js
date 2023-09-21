@@ -100,9 +100,9 @@ router.post('/login',[
   const {email , password}=req.body
   try {
     let user = await User.findOne({email});
-    if(!user){
-        return res.status(400).json({error: "enter valid details"})
-    }
+    // if(!user){
+    //     return res.status(400).json({error: "enter valid details"})
+    // }
 // password compare    
     const passwordcompare = await bcrypt.compare(password, user.password)
     

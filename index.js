@@ -22,7 +22,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/ultrock', {
     }
 )
 app.use(cors({
-    origin:'http://localhost:3000', 
+    origin:'http://localhost:3000', credentials: true,
 }));
 app.use(cookie())
 
