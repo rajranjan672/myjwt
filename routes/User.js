@@ -94,8 +94,8 @@ const verifyToken = async(req, res, next) => {
   };
 
   router.get('/get', verifyToken, async(req, res) => {
-    const ress = await User.find()
-    return res.send(ress)
+    // const ress = await User.find()
+     res.send(req.rootUser)
 })
 
 
