@@ -65,24 +65,37 @@ router.post('/createuser',[
 
 })
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async(req, res, next) => {
+    try {
   const token = req.cookies.access_token;
   
-    if (!token) {
-      return res.status(403).send("A token is required for authentication");
-    }
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = decoded;
+    // if (!token) {
+    //   return res.status(403).send("A token is required for authentication");
+    // }
+  
+      const varifyToken = jwt.verify(token, JWT_SECRET);
+
+      const rootUser = await User.findOne({_id: varifyToken._id, "tokens.token": token})
+      console.log(rootUser)
+       if(!rootUser) {
+         throw new Error("User not found")
+       }
+
+      req.token = token;
+      req.rootUser = rootUser
+      req.userID = rootUser._id;
+
+      next()
+      // req.user = decoded;
     } catch (err) {
       return res.status(401).send("Invalid Token");
     }
-    return next();
+    // return next();
   };
 
   router.get('/get', verifyToken, async(req, res) => {
     const ress = await User.find()
-    res.send(ress)
+    return res.send(ress)
 })
 
 
@@ -111,19 +124,23 @@ router.post('/login',[
         return res.status(400).json({error: "enter valid details"})
 
     }
-    const dta= {
-        user:{
-            id:user.id
-        }
-    }
-    const authtoken = await jwt.sign(dta, JWT_SECRET,
-      {
-        expiresIn: "2h",
-      });
+    // const dta= {
+    //     user:{
+    //         id:user.id
+    //     }
+    // }
+
+    const token = await user.generateToken()
+    console.log(token)
+    // const authtoken = await jwt.sign({_id:this._id}, JWT_SECRET,
+    //   {
+    //     expiresIn: "2h",
+    //   });
+    //   this.tokens = 
     // success=true
     // res.json({success, authtoken}) 
-    res
-    .cookie("access_token", authtoken, {
+   return res
+    .cookie("access_token", token, {
       httpOnly: true,
       // secure: process.env.NODE_ENV === "production",
     })
