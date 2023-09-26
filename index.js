@@ -38,9 +38,9 @@ app.use(cookie())
 
 // this is middleware
 app.use(express.json())
-
+ const post = require("./models/Post")
 app.use('/api/User' , require('./routes/User'));
-app.use("/api", require("./routes/Post"))
+  app.use("/api", post.createStory)
 // app.use('/api/login' , require('./routes/login'));
 
 
