@@ -8,30 +8,54 @@ const personSchema = Schema({
 //   stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
 });
 
-const storySchema = Schema({
-  author: { type: Schema.Types.ObjectId, ref: 'Person' },
-  title: String,
-//   fans: [{ type: Schema.Types.ObjectId, ref: 'Person' }]
-});
+const author = async(() => {
+    new Person({
+        _id: new mongoose.Types.ObjectId(),
+        name: 'Ian Fleming',
+        age: 50
+      });
+      
+},
+)
+
+await author.save()
+  
+  const story1 = async(() => {
+    new Story({
+        title: 'Casino Royale',
+        author: author._id // assign the _id from the person
+      });
+  },
+  await story1.save()
+
+  ) 
+  
+  // that's it!
+
+// const storySchema = Schema({
+//   author: { type: Schema.Types.ObjectId, ref: 'Person' },
+//   title: String,
+// //   fans: [{ type: Schema.Types.ObjectId, ref: 'Person' }]
+// });
 
 const Story = mongoose.model('Story', storySchema);
 const Person = mongoose.model('Person', personSchema);
 
-exports.createPerson = async(req, res, next) => {
+// exports.createPerson = async(req, res, next) => {
 
-     let response = [];
+//      let response = [];
 
-     const createPerson = new Person({
-        _id: new mongoose.Types.ObjectId(),
-         name: 'Ian Fleming',
-         age: 50
+//      const createPerson = new Person({
+//         _id: new mongoose.Types.ObjectId(),
+//          name: 'Ian Fleming',
+//          age: 50
        
-     });
+//      });
 
    
-      const ress = await createPerson.save()
-    res.send(ress)
-};
+//       const ress = await createPerson.save()
+//     res.send(ress)
+// };
 
 exports.createStory = async(req, res, next) => {
 
