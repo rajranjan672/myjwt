@@ -40,6 +40,7 @@ app.use(cookie())
 app.use(express.json())
 
 app.use('/api/User' , require('./routes/User'));
+app.use("/api", require("./routes/Post"))
 // app.use('/api/login' , require('./routes/login'));
 
 
