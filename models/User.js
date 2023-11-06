@@ -18,6 +18,7 @@ const UserSchema = new Schema({
     password:{
         type:String,
         
+        
     },
     repeatpassword:{
         type:String,
